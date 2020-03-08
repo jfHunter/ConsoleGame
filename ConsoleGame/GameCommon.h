@@ -8,6 +8,26 @@
 
 #include "StringUtils.hpp"
 
+#include "LevelPackFileFormat.h"
+
+#define GAME_VERSION               GAME_VERSION_10
+
+#define GET_U32_BE(ptr_)           (((ptr_)[0] << 24) | ((ptr_)[1] << 16) | ((ptr_)[2] << 8) | ((ptr_)[3] << 0))
+#define GET_U16_BE(ptr_)           (((ptr_)[0] << 8)  | ((ptr_)[1] << 0))
+#define GET_U8(ptr_)               ((ptr_)[0])
+
+#define SWAP_U32(val_)             ((((val_ >> 24) & 0xFF) << 0) | (((val_ >> 16) & 0xFF) << 8) | (((val_ >> 8) & 0xFF) << 16) | (((val_ >> 0) & 0xFF) << 24))
+#define SWAP_U16(val_)             ((((val_ >> 8) & 0xFF) << 0) | (((val_ >> 0) & 0xFF) << 8))
+
+#define GET_U32_BE_AND_MOVE(var_, ptr_) \
+	{ var_ = GET_U32_BE(ptr_); ptr_ += 4; }
+
+#define GET_U16_BE_AND_MOVE(var_, ptr_) \
+	{ var_ = GET_U16_BE(ptr_); ptr_ += 2; }
+
+#define GET_U8_AND_MOVE(var_, ptr_) \
+	{ var_ = GET_U8(ptr_); ptr_ += 1; }
+
 using std::cout;
 using std::endl;
 using std::string;

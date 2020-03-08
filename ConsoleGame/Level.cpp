@@ -100,19 +100,13 @@ string LevelSymbol::GetDescription()
 }
 
 
-LevelMusic::LevelMusic(int _id, string _author, string _album, string _title, uint64_t _length, char* _data)
+LevelMusic::LevelMusic(string _author, string _album, string _title, uint64_t _length, char* _data)
 {
-	this->m_id = _id;
 	this->m_author = _author;
 	this->m_album = _album;
 	this->m_title = _title;
 	this->m_length = _length;
 	this->m_data = _data;
-}
-
-int LevelMusic::GetId()
-{
-	return this->m_id;
 }
 
 string LevelMusic::GetAuthor()
@@ -141,22 +135,21 @@ char* LevelMusic::GetData()
 }
 
 Level::Level(
-	vector<LevelRoomInfo> _levRooms,
-	vector<LevelTargetInfo> _levTargets,
-	vector<LevelSymbolInfo> _levSymbols,
-	vector<LevelPortalInfo> _levPortals,
+	RoomList _levRooms,
+	TargetList _levTargets,
+	SymbolList _levSymbols,
+	PortalList _levPortals,
 	string _levInfo,
-	LevelMusic _levMusic)
-	:
+	LevelMusic _levMusic
+) :
 	m_rooms(_levRooms),
 	m_targets(_levTargets),
 	m_symbols(_levSymbols),
 	m_portals(_levPortals),
 	m_levelInfo(_levInfo),
-	m_levelMusic(_levMusic
-) { }
+	m_levelMusic(_levMusic) { }
 
-LevelMusic Level::GetLevelMusic()
+LevelMusic Level::GetMusic()
 {
 	return this->m_levelMusic;
 }
@@ -166,74 +159,22 @@ string Level::GetLevelInfo()
 	return this->m_levelInfo;
 }
 
-int Level::GetNumberOfRooms()
+const RoomList& Level::GetRooms()
 {
-	return (int)this->m_rooms.size();
+	return this->m_rooms;
 }
 
-int Level::GetNumberOfTargets()
+const TargetList& Level::GetTargets()
 {
-	return (int)this->m_targets.size();
+	return this->m_targets;
 }
 
-int Level::GetNumberOfSymbols()
+const SymbolList& Level::GetSymbols()
 {
-	return (int)this->m_symbols.size();
+	return this->m_symbols;
 }
 
-int Level::GetNumberOfPortals()
+const PortalList& Level::GetPortals()
 {
-	return (int)this->m_portals.size();
-}
-
-LevelRoomInfo Level::GetLevelRoom(int index)
-{
-	LevelRoomInfo result = { 0 };
-
-	for (size_t i = 0; i < this->m_rooms.size(); i++) {
-		if (i == index) {
-			return this->m_rooms.at(i);
-		}
-	}
-
-	return result;
-}
-
-LevelTargetInfo Level::GetLevelTarget(int index)
-{
-	LevelTargetInfo result = { 0 };
-
-	for (size_t i = 0; i < this->m_targets.size(); i++) {
-		if (i == index) {
-			return this->m_targets.at(i);
-		}
-	}
-
-	return result;
-}
-
-LevelSymbolInfo Level::GetLevelSymbol(int index)
-{
-	LevelSymbolInfo result = { 0 };
-
-	for (size_t i = 0; i < this->m_symbols.size(); i++) {
-		if (i == index) {
-			return this->m_symbols.at(i);
-		}
-	}
-
-	return result;
-}
-
-LevelPortalInfo Level::GetLevelPortal(int index)
-{
-	LevelPortalInfo result = { 0 };
-
-	for (size_t i = 0; i < this->m_portals.size(); i++) {
-		if (i == index) {
-			return this->m_portals.at(i);
-		}
-	}
-
-	return result;
+	return this->m_portals;
 }

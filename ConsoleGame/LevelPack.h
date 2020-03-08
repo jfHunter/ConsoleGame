@@ -18,30 +18,23 @@ typedef vector<LevelPack> LevelPackList;
 class LevelPack
 {
 private:
-	LevelPackFileFormat  m_lpFormat;
-	string               m_levelPackName;
-	map<int, string>     m_binDataTable;
-	vector<Level>        m_levels;
-
-	string GetBinObjectAtIndex(int index);
-	BgMusicInfo * GetBgMusicInfo(int musicId);
-	void CreateLevels();
-	void CreateBinDataTable();
+	LevelList    m_levels;
+	string       m_name;
+	string       m_author;
+	GameVersion  m_version;
+	string       m_description;
 
 public:
 	LevelPack();
-	LevelPack(LevelPackFileFormat _lpff, bool isCompatible);
-
+	LevelPack(LevelList _levelList, string _name, string _author, GameVersion _gameVersion, string _description);
 	string GetName();
 	string GetAuthor();
-	string GetOriginalFile();
-	string GetVersion();
+	GameVersion GetVersion();
 	string GetDescription();
-
 	vector<Level> GetLevels();
 };
 
-#if _interface_
+#ifdef _interface_
 
 void example()
 {

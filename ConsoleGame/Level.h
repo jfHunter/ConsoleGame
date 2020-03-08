@@ -9,6 +9,18 @@
 using std::vector;
 using std::string;
 
+class Level;
+class LevelRoom;
+class LevelPortal;
+class LevelTarget;
+class LevelSymbol;
+
+typedef vector<Level> LevelList;
+typedef vector<LevelRoom> RoomList;
+typedef vector<LevelPortal> PortalList;
+typedef vector<LevelTarget> TargetList;
+typedef vector<LevelSymbol> SymbolList;
+
 class LevelRoom
 {
 private:
@@ -56,7 +68,6 @@ public:
 	char GetObjectB();
 };
 
-
 class LevelSymbol
 {
 private:
@@ -69,11 +80,9 @@ public:
 	string GetDescription();
 };
 
-
 class LevelMusic
 {
 private:
-	int       m_id;
 	string    m_author;
 	string    m_album;
 	string    m_title;
@@ -81,9 +90,8 @@ private:
 	uint64_t  m_length;
 
 public:
-	LevelMusic(int _id, string _author, string _album, string _title, uint64_t _length, char * _data);
+	LevelMusic(string _author, string _album, string _title, uint64_t _length, char * _data);
 
-	int GetId();
 	string GetAuthor();
 	string GetAlbum();
 	string GetTitle();
@@ -94,31 +102,20 @@ public:
 class Level
 {
 private:
-	vector<LevelRoomInfo>    m_rooms;
-	vector<LevelTargetInfo>  m_targets;
-	vector<LevelSymbolInfo>  m_symbols;
-	vector<LevelPortalInfo>  m_portals;
-	LevelMusic               m_levelMusic;
-	string                   m_levelInfo;
+	RoomList    m_rooms;
+	TargetList  m_targets;
+	SymbolList  m_symbols;
+	PortalList  m_portals;
+	LevelMusic  m_levelMusic;
+	string      m_levelInfo;
 
 public:
-	Level(
-		vector<LevelRoomInfo> _levRooms,
-		vector<LevelTargetInfo> _levTargets,
-		vector<LevelSymbolInfo> _levSymbols,
-		vector<LevelPortalInfo> _levPortals,
-		string _levInfo,
-		LevelMusic _levMusic
-	);
+	Level(RoomList _levRooms, TargetList _levTargets, SymbolList _levSymbols, PortalList _levPortals, string _levInfo, LevelMusic _levMusic);
+	const RoomList& GetRooms();
+	const TargetList& GetTargets();
+	const SymbolList& GetSymbols();
+	const PortalList& GetPortals();
 
-	LevelMusic GetLevelMusic();
+	LevelMusic GetMusic();
 	string GetLevelInfo();
-	int GetNumberOfRooms();
-	int GetNumberOfTargets();
-	int GetNumberOfSymbols();
-	int GetNumberOfPortals();
-	LevelRoomInfo GetLevelRoom(int index);
-	LevelTargetInfo GetLevelTarget(int index);
-	LevelSymbolInfo GetLevelSymbol(int index);
-	LevelPortalInfo GetLevelPortal(int index);
 };

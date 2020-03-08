@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_physfs.h>
@@ -15,9 +16,11 @@
 
 using std::string;
 using std::vector;
+using std::map;
 
 typedef RegularFile LevelPackFile;
 typedef vector<LevelPackFile> LevelPackFileList;
+typedef map<int, string> BinObjMap;
 
 /*
  * Class LevelPackValidator
@@ -34,13 +37,13 @@ public:
 	 * if it's true level pack file.
 	 *
 	 * Parameters:
-	 *     @param alFile                    : allegro's library file instance of level pack
+	 *     @param magicNumber               : magic number value
 	 *
 	 * Returns:
 	 *     true : if provided file is valid level pack file
 	 *     false : if provided file is not level pack file
 	 */
-	bool ValidateLevelPackFile(ALLEGRO_FILE* alFile);
+	bool ValidateLevelPackFile(uint32_t magicNumber);
 
 	/**
 	 * Function checks game version support of
@@ -64,10 +67,41 @@ private:
 	LevelPack            m_levelPack;
 	LevelPackValidator   m_levelPackValidator;
 
+	BgMusicInfo * GetMusicInfo(LevelPackFileFormat lpff, int bgMusicId);
+	string GetBinaryObject(BinObjMap& binaryObjMap, int objectId);
+	void CreateBinaryObjectTable(LevelPackFileFormat& lpff, BinObjMap& binaryObjMap);
+	void CreateLevelPack(LevelPackFileFormat& lpff);
+	bool GetLevelPackFileFormat(LevelPackFileFormat& lpff, char * levelPackBuffer, uint64_t levelPackSize);
+
 public:
 	LevelPackLoader(LevelPackValidator& _levelPackValidator);
 
+	/**
+	 * Function scans level pack base directory.
+	 *
+	 * Returns:
+	 *     list of level pack files
+	 */
 	LevelPackFileList ScanLevelPackDirectory();
+
+	/**
+	 * Function loads specified level pack denoted
+	 * by its file.
+	 *
+	 * Parameters:
+	 *     levelPackFile                    : level pack file to load
+	 *
+	 * Returns:
+	 *     true : if no error occured during level pack load
+	 *     false : if failed to load level pack
+	 */
 	bool LoadLevelPack(LevelPackFile levelPackFile);
+
+	/**
+	 * Function returns loaded level pack
+	 *
+	 * Returns:
+	 *     level pack object
+	 */
 	LevelPack GetLevelPack();
 };
